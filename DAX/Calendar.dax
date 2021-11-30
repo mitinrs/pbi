@@ -1,0 +1,44 @@
+#Calendar = 
+var _fromYear=2021
+var _toYear=2022
+var _startOfFiscalYear=3 //номер месяца начала фискального года
+var _today=TODAY()
+return
+ADDCOLUMNS(
+    CALENDAR(
+                DATE(_fromYear,1,1),
+                DATE(_toYear,12,31)
+),
+"Год и имя квартала",FORMAT([Date],"YYYY")&" Q"&FORMAT([Date],"Q"),
+"Год и имя месяца",FORMAT([Date],"YYYY-MMM"),
+"Год и квартал",INT(FORMAT([Date],"YYYYQ")),
+"Год и номер месяца",INT(FORMAT([Date],"YYYYMM")),
+"Год конец",DATE( YEAR([Date]),12,31),
+"Год начало",DATE( YEAR([Date]),1,1),
+"Год",YEAR([Date]),
+"День в году номер",DATEDIFF(DATE( YEAR([Date]), 1, 1),[Date],DAY)+1,
+"День недели имя короткое",FORMAT([Date],"DDD"),
+"День недели имя",FORMAT([Date],"DDDD"),
+"День недели номер",WEEKDAY([Date]),
+"День",DAY([Date]),
+"Дней в месяце",DATEDIFF(DATE( YEAR([Date]), MONTH([Date]), 1),EOMONTH([Date],0),DAY)+1,
+"Квартал имя","Q"&FORMAT([Date],"Q"),
+"Квартал конец",EOMONTH(DATE( YEAR([Date]), QUARTER([Date])*3, 1),0),
+"Квартал начало",DATE( YEAR([Date]), (QUARTER([Date])*3)-2, 1),
+"Квартал",QUARTER([Date]),
+"Месяц имя короткое",FORMAT([Date],"MMM"),
+"Месяц имя",FORMAT([Date],"MMMM"),
+"Месяц конец",EOMONTH([Date],0),
+"Месяц начало",DATE( YEAR([Date]), MONTH([Date]), 1),
+"Месяц",MONTH([Date]),
+"Неделя конец",[Date]+7-WEEKDAY([Date]),
+"Неделя начало", [Date]-WEEKDAY([Date])+1,
+"Неделя номер в году",WEEKNUM([Date]),
+"Разница дней",DATEDIFF(_today,[Date],DAY),
+"Разница кварталов",DATEDIFF(_today,[Date],QUARTER),
+"Разница лет",DATEDIFF(_today,[Date],YEAR),
+"Разница месяцев",DATEDIFF(_today,[Date],MONTH),
+"Фискальный год",if(_startOfFiscalYear=1,YEAR([Date]),YEAR([Date])+ QUOTIENT(MONTH([Date])+ (13-_startOfFiscalYear),13)),
+"Фискальный квартал",QUARTER( DATE( YEAR([Date]),MOD( MONTH([Date])+ (13-_startOfFiscalYear) -1 ,12) +1,1) ),
+"Фискальный месяц",MOD( MONTH([Date])+ (13-_startOfFiscalYear) -1 ,12) +1
+)
